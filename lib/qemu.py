@@ -1,4 +1,5 @@
 from os import popen, listdir
+from os.path import exists
 
 def start_machine_command(image, vnc=None, memory=8, cpu=4):
     if image == "":
@@ -23,6 +24,10 @@ def create_disk_command(name, size):
     return ret
 
 def create_disk(name, size):
+    # check to see if disk exists before creating it
+    if exists(name):
+        raise Exception("disk already exists")
+
     popen(create_disk_command(name, size))
 
 def start_virtual_machine(name):

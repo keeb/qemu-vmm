@@ -29,8 +29,11 @@ def new_disk():
 
     if disk_path == "" or disk_size == "":
         return jsonify({"result": "error"}), 201
-
-    create_disk(disk_path, disk_size)
+    try:
+        create_disk(disk_path, disk_size)
+    except Exception:
+        return jsonify({"result": "error"}), 201
+    
     return jsonify({"result": "success"}), 200
 
 @app.route("/disks", methods=["GET"])
