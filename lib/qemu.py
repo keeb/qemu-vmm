@@ -5,7 +5,6 @@ def start_machine_command(image, vnc=None, memory=8, cpu=4):
         raise Exception("image cannot be empty")  
     
     command_parts = ["qemu-system-x86_64 -enable-kvm -machine type=q35,accel=kvm -netdev bridge,id=hn0 -device virtio-net-pci,netdev=hn0,id=nic2,mac=00:00:00:00:00:06"]
-
     command_parts.extend([f"-m {memory}G", f"-smp {cpu}", f"-drive file={image}"])
     
     if vnc:
@@ -20,8 +19,7 @@ def create_disk_command(name, size):
     if "G" not in size:
         size += "G"
 
-    ret = f"qemu-img create -f qcow2 -o preallocation=metadata  {name} {size}"
-    print(ret)
+    ret = f"qemu-img create -f qcow2 -o preallocation=metadata {name} {size}"
     return ret
 
 def create_disk(name, size):
