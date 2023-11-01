@@ -1,4 +1,5 @@
 import os
+import json
 
 from flask import Flask, jsonify, request
 from flask_cors import CORS
@@ -24,13 +25,25 @@ def new_disk():
         "size:": "10"
     }
     """
-    disk_path = request.json.get("file", "")
-    disk_size = request.json.get("size", "")
+    
+    try:
+        data = json.loads(request.json)
+    except TypeError:
+        data = request.json
+    
+    try:
+        disk_path = data.get("file", "")
+        disk_size = str(data.get("size", "")) # force convert to string
+    except:
+        return jsonify({"result": "invalid json"}), 201
+    
+    disk_name = f"{DISK_DIRECTORY}/{disk_path}"
+    print(disk_name, " is disk name")
 
     if disk_path == "" or disk_size == "":
-        return jsonify({"result": "error"}), 201
+        return jsonify({"result": f"error, disk_path is {disk_path}, disk_size is {disk_size}"}), 201
     try:
-        create_disk(disk_path, disk_size)
+        create_disk(disk_name, disk_size)
     except Exception:
         return jsonify({"result": "error"}), 201
     

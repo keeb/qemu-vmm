@@ -1,29 +1,28 @@
-async function qualification(component: Input): Promise < Output > {
+async function main(component: Input): Promise < Output > {
+    const response = await fetch('http://100.92.243.19:6942/disks');
 
-    const code = component.code?.["drive_option"]?.code;
-    if (!code) {
+    const imageName = component?.domain?.["Image Name"]
+    if (imageName == null) {
         return {
-            result: "failure",
-            message: "component doesnt have proper representation"
+            result: 'failure',
+            message: 'Image name is not provided'
         }
     }
 
-    if (!component.domain?.["Image Name"]) {
-        return {
-            result: "failure",
-            message: "Image Name is not set"
-        }
+    var image = imageName + ".qcow2"
+
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
     }
 
-    if (!component.domain?.["Size (Gb)"]) {
+    const resp = await response.json();
+
+    if (resp.disks.includes(image)) {
         return {
-            result: "failure",
-            message: "Size is not set"
+            result: 'failure',
+            message: 'Image already exists'
         }
     }
-
-    // could add a function here to see if we have enough space to be able to create it
-    // however, for qemu-img it doesn't actually take up the full size
 
     return {
         result: 'success',

@@ -1,4 +1,4 @@
-function createAsset() {
+function main() {
 
     const imageName = new PropBuilder()
         .setKind("string")

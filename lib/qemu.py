@@ -15,6 +15,7 @@ def start_machine_command(image, vnc=None, memory=8, cpu=4):
 
 
 def create_disk_command(name, size):
+    print(f"attempting to create disk {name} {size}")
     if ".qcow2" not in name:
         name += ".qcow2"
     if "G" not in size:
@@ -25,6 +26,7 @@ def create_disk_command(name, size):
 
 def create_disk(name, size):
     # check to see if disk exists before creating it
+    print(f"entered execution {name}, {size}")
     if exists(name):
         raise Exception("disk already exists")
 

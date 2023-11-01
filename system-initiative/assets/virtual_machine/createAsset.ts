@@ -1,4 +1,4 @@
-function createAsset() {
+function main() {
 
     const imageNameValueFrom = new ValueFromBuilder()
         .setKind("inputSocket")

@@ -28,11 +28,12 @@ class IntegrationTest(unittest.TestCase):
     def test_create_disk(self):
         # cleanup previous run
         test_file = "/storage/01/vms/disks/integration_test.qcow2"
+        disk_name = "integration_test.qcow2"
         if os.path.exists(test_file):
             os.remove(test_file)
 
         test_file_size = "10"
-        disk_test = requests.post(base_url + "/disk", json.dumps({"file": test_file, "size": test_file_size}), headers={"Content-Type": "application/json"})
+        disk_test = requests.post(base_url + "/disk", json.dumps({"file": disk_name, "size": test_file_size}), headers={"Content-Type": "application/json"})
         self.assertTrue(disk_test.status_code == 200)
         time.sleep(1)
         self.assertTrue(os.path.exists(test_file))
