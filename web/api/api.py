@@ -49,6 +49,27 @@ def new_disk():
     
     return jsonify({"result": "success"}), 200
 
+@app.route("/disk", methods=["DELETE"])
+def delete_disk():
+    pass
+
+@app.route("/disk", methods=["GET"])
+def get_disk():
+    try:
+        data = json.loads(request.json)
+    except TypeError:
+        data = request.json
+
+    try:
+        disk_name = data.get("file", "")
+    except:
+        return jsonify({"result": "invalid json"}), 201
+
+    disk_path = f"{DISK_DIRECTORY}/{disk_name}"
+    
+
+
+
 @app.route("/disks", methods=["GET"])
 def disk_list():
     return jsonify(disks(DISK_DIRECTORY)), 200

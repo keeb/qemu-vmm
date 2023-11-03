@@ -1,5 +1,4 @@
 function main() {
-
     const imageName = new PropBuilder()
         .setKind("string")
         .setName("Image Name")
