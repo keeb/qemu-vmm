@@ -1,5 +1,6 @@
-from os import popen, listdir
+from os import listdir
 from os.path import exists
+import subprocess
 
 def start_machine_command(image, vnc=None, memory=8, cpu=4):
     if image == "":
@@ -21,7 +22,7 @@ def create_disk_command(name, size):
     if "G" not in size:
         size += "G"
 
-    ret = f"qemu-img create -f qcow2 -o preallocation=metadata {name} {size}"
+    ret = f"qemu-img create -f qcow2 -o preallocation=metadata {name} {size}".split(" ")
     return ret
 
 def create_disk(name, size):
@@ -30,7 +31,8 @@ def create_disk(name, size):
     if exists(name):
         raise Exception("disk already exists")
 
-    popen(create_disk_command(name, size))
+    process = subprocess.Popen(create_disk_command(name, size))
+    process.wait()
 
 def start_virtual_machine(name):
     pass

@@ -1,7 +1,7 @@
 import unittest
 
 
-from lib.qemu import start_machine_command
+from lib.qemu.qemu import start_machine_command
 class TestQemuLibraryGenerateCommand(unittest.TestCase):
     def test_default_config(self):
         try:
@@ -25,7 +25,7 @@ class TestQemuLibraryGenerateCommand(unittest.TestCase):
         self.assertIn(expected_command, start_machine_command("novnc.qcow2", cpu=12))    
 
 
-from lib.qemu import create_disk_command
+from lib.qemu.qemu import create_disk_command
 class TestQemuDiskCommand(unittest.TestCase):
     def test_no_qcow2(self):
         self.assertIn("qcow2", create_disk_command("poop", "10G"))

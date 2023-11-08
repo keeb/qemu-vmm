@@ -11,8 +11,9 @@ async function main(component: Input): Promise < Output > {
     const data = await req.json()
     console.log(data);
 
+    
     return {
-        payload: code,
+        payload: data,
         status: "ok"
     };
 }

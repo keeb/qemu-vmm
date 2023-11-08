@@ -1,7 +1,12 @@
 import subprocess
-import pprint
+from os.path import exists
 
 def get_qemu_img_info(disk_name):
+    if ".qcow2" not in disk_name:
+        disk_name += ".qcow2"
+
+    if exists(disk_name) == False: raise ValueError(f"disk does not exist, {disk_name}")
+
     command = ["qemu-img", "info", disk_name]
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
     
@@ -15,6 +20,9 @@ def get_qemu_img_info(disk_name):
         key = parts[0].strip().replace(' ', '_')
         value = ':'.join(parts[1:]).strip()
 
+        if value == '':
+            continue
+
         if not key.startswith(' '):
             current_section = None  # Reset current section when not indented
             info[key] = value
@@ -24,13 +32,6 @@ def get_qemu_img_info(disk_name):
             current_section = key
             info[current_section] = {}
     
-    process.wait()    
-    return {
-        "name": info["filename"],
-        "corrupt": info["corrupt"],
-        "actual_size": info["disk_size"],
-        "size": info["virtual_size"],
-    }
-
-pp =  pprint.PrettyPrinter(indent=4)
-pp.pprint(get_qemu_img_info("/storage/01/vms/disks/si_test.qcow2"))
+    process.wait()
+    
+    return info

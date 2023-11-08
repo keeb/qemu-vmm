@@ -10,11 +10,6 @@ port = environ.get("QEMU_API_PORT", "6942")
 
 base_url = f"http://{host}:{port}/"
 
-"""
-    so if mocked, how would that work?
-
-"""
-
 class IntegrationTest(unittest.TestCase):
     def test_basic_isos(self):
         image_list = requests.get(base_url + "iso").json().get("images")

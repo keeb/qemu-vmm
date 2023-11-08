@@ -3,7 +3,9 @@ import json
 
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-from lib.qemu import create_disk, iso, disks, machines, create_machine
+from lib.qemu.qemu import create_disk, iso, disks, machines, create_machine
+from lib.qemu.image import get_qemu_img_info
+
 
 app = Flask(__name__)
 CORS(app)
@@ -47,7 +49,10 @@ def new_disk():
     except Exception:
         return jsonify({"result": "error"}), 201
     
-    return jsonify({"result": "success"}), 200
+    print(disk_name, "is the disk name in api.py")
+    data = get_qemu_img_info(disk_name)
+
+    return jsonify(data), 200
 
 @app.route("/disk", methods=["DELETE"])
 def delete_disk():
