@@ -13,14 +13,14 @@ function main() {
         .setWidget(new PropWidgetDefinitionBuilder().setKind("text").build())
         .build()
 
-    const imageSocket = new SocketDefinitionBuilder()
-        .setArity("one")
-        .setName("Image Name")
+    const hostProp = new SecretPropBuilder()
+        .setName("Host")
+        .setSecretKind("api")
         .build();
 
     return new AssetBuilder()
         .addProp(imageName)
         .addProp(imageSize)
-        .addOutputSocket(imageSocket)
+        .addSecretProp(hostProp)
         .build();
 }
