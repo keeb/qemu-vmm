@@ -1,6 +1,26 @@
 async function main(component: Input): Promise < Output > {
     const code = component?.properties?.code?.["image-code-gen"]?.code;
-    const req = await fetch('http://100.92.243.19:6942/disk', {
+
+    if (!code) {
+        return {
+            status: "error",
+            message: "no code gen func set"
+        }
+    }
+
+    console.log("getting my host secret");
+    const host = requestStorage.getEnv("API_HOST");
+
+    if (!host) {
+        return {
+            status: 'error',
+            message: 'Host secret must be set'
+        }
+    }
+
+    const url = `http://${host}/disk`;
+
+    const req = await fetch(url, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -11,7 +31,7 @@ async function main(component: Input): Promise < Output > {
     const data = await req.json()
     console.log(data);
 
-    
+
     return {
         payload: data,
         status: "ok"

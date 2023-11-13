@@ -1,9 +1,27 @@
 async function main(component: Input): Promise < Output > {
-    console.log("looking up a host");
+    const payload = component.properties.resource?.payload
 
+    if (payload) {
+        console.log("early return, component exists")
+        return {
+            result: 'success',
+            message: 'Component qualified'
+        };
+    }
+    console.log("getting my host secret");
+    const host = requestStorage.getEnv("API_HOST");
+
+    if (!host) {
+        return {
+            result: 'failure',
+            message: 'Host secret must be set'
+        }
+    }
+
+    const url = `http://${host}/disks`;
 
     console.log("making the request")
-    const response = await fetch('http://100.92.243.19:6942/disks');
+    const response = await fetch(url);
 
 
     console.log("getting the image name")
@@ -38,6 +56,7 @@ async function main(component: Input): Promise < Output > {
         }
     }
 
+    console.log("hell yeah, we did it")
     return {
         result: 'success',
         message: 'Component qualified'
