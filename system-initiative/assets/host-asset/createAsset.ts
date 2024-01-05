@@ -3,13 +3,16 @@ function main() {
         .setName("Host")
         .addProp(
             new PropBuilder()
-            .setName("api")
+            .setName("host_api")
             .setKind("string")
-            .setWidget(new PropWidgetDefinitionBuilder().setKind("text").build())
-            .build()
-        ).build();
-
+            .setWidget(
+                new PropWidgetDefinitionBuilder()
+                .setKind("text")
+                .build()
+            ).build())
+        .build();
+        
     return new AssetBuilder()
         .defineSecret(itsSecretTime)
-        .build();
+        .build()
 }

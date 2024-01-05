@@ -15,7 +15,7 @@ function main() {
         .build()
 
     const hostProp = new SecretPropBuilder()
-        .setName("api")
+        .setName("host_api")
         .setSecretKind("Host")
         .build();
 
