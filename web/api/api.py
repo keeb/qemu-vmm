@@ -52,26 +52,21 @@ def new_disk():
     print(disk_name, "is the disk name in api.py")
     data = get_qemu_img_info(disk_name)
 
-    return jsonify(data), 200
+    return jsonify(data), 201
 
 @app.route("/disk", methods=["DELETE"])
 def delete_disk():
     pass
 
-@app.route("/disk", methods=["GET"])
-def get_disk():
-    try:
-        data = json.loads(request.json)
-    except TypeError:
-        data = request.json
-
-    try:
-        disk_name = data.get("file", "")
-    except:
-        return jsonify({"result": "invalid json"}), 201
-
+@app.route("/disk/<disk_name>", methods=["GET"])
+def get_disk_info(disk_name):
     disk_path = f"{DISK_DIRECTORY}/{disk_name}"
+    if not os.path.exists(disk_path):
+        return jsonify({"result": "error"}), 201
     
+    data = get_qemu_img_info(disk_path)
+    
+    return jsonify(data), 201   
 
 
 

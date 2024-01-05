@@ -19,7 +19,12 @@ class IntegrationTest(unittest.TestCase):
         self.test_create_disk()
         disk_list = requests.get(base_url + "disks").json().get("disks")
         self.assertTrue("integration_test.qcow2" in disk_list)
-    
+
+    def test_get_disk(self):
+        self.test_create_disk()
+        disk_info = requests.get(base_url + "disk/integration_test.qcow2").json()
+        self.assertTrue(disk_info.get("file_format") == "qcow2")
+
     def test_create_disk(self):
         # cleanup previous run
         test_file = "/storage/01/vms/disks/integration_test.qcow2"
@@ -28,8 +33,8 @@ class IntegrationTest(unittest.TestCase):
             os.remove(test_file)
 
         test_file_size = "10"
-        disk_test = requests.post(base_url + "/disk", json.dumps({"file": disk_name, "size": test_file_size}), headers={"Content-Type": "application/json"})
-        self.assertTrue(disk_test.status_code == 200)
+        disk_test = requests.post(base_url + "disk", json.dumps({"file": disk_name, "size": test_file_size}), headers={"Content-Type": "application/json"})
+        self.assertTrue(disk_test.status_code == 201)
         time.sleep(1)
         self.assertTrue(os.path.exists(test_file))
 
@@ -40,12 +45,13 @@ class IntegrationTest(unittest.TestCase):
             os.remove(test_file)
 
         machine_request_dict = {
-                                "name": "integration_test", 
-                                "image": "/storage/01/vms/disks/integration_test.qcow2", 
-                                "vnc": None, 
-                                "memory": "8", 
-                                "cpu": "8"
-                                }
+            "name": "integration_test", 
+            "image": "/storage/01/vms/disks/integration_test.qcow2", 
+            "vnc": None, 
+            "memory": "8", 
+            "cpu": "8"
+        }
+
         machine_request = requests.post(base_url + "/machine", json.dumps(machine_request_dict), headers={"Content-Type": "application/json"})
         self.assertTrue(machine_request.status_code == 200)
         time.sleep(0.2)

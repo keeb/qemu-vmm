@@ -7,10 +7,11 @@ function main() {
         .build()
 
     const imageSize = new PropBuilder()
-        .setKind("integer")
+        .setKind("string")
         .setName("Size (Gb)")
         .setDocumentation("Size of the image in gigabytes.")
         .setWidget(new PropWidgetDefinitionBuilder().setKind("text").build())
+        .setValidationFormat(Joi.number())
         .build()
 
     const hostProp = new SecretPropBuilder()

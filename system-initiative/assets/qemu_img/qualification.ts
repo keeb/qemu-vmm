@@ -1,5 +1,5 @@
 async function main(component: Input): Promise < Output > {
-    const payload = component.properties.resource?.payload
+    const payload = component.resource?.payload
 
     if (payload) {
         console.log("early return, component exists")
@@ -50,10 +50,12 @@ async function main(component: Input): Promise < Output > {
     console.log(resp.disks)
 
     if (resp.disks.includes(image)) {
-        return {
-            result: 'failure',
-            message: 'Image already exists'
-        }
+        const disk_url = `http://${host}/disk/${image}`;
+
+        console.log("getting disk details ...")
+        const disk_response = await fetch(disk_url);
+        const dresp = await disk_response.json();
+        component.resource.payload = dresp;
     }
 
     console.log("hell yeah, we did it")
