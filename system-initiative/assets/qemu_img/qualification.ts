@@ -1,4 +1,13 @@
 async function main(component: Input): Promise < Output > {
+
+    if (component?.resource) {
+        console.log("we have a resource, returning")
+        return {
+            result: 'success',
+            message: 'Component qualified'
+        };
+    }
+
     console.log("getting my host secret");
     const host = requestStorage.getEnv("API_HOST");
 

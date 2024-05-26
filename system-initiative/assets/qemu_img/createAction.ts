@@ -1,5 +1,5 @@
 async function main(component: Input): Promise < Output > {
-    const code = component?.properties?.code?.["image-code-gen"]?.code;
+    const code = component?.properties?.code?.["keeb:QemuImageCodeGen"]?.code;
 
     if (!code) {
         return {
